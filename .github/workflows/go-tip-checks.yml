@@ -92,10 +92,11 @@ jobs:
       SLACK_MESSAGE: "${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
 
     steps:
-      - uses: percona-platform/checkout@v3
-      - uses: percona-platform/setup-node@v2
+#      - uses: percona-platform/checkout@v3
+#      - uses: percona-platform/setup-node@v2
       - name: Slack Notification
-        uses: percona-platform/action-slack-notify@v2
+        run: Success
+#        uses: percona-platform/action-slack-notify@v2
 
   workflow_failure:
     if: ${{ failure() }}
@@ -112,7 +113,8 @@ jobs:
       SLACK_MESSAGE: "Workflow failed: ${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
 
     steps:
-      - uses: percona-platform/checkout@v3
+#      - uses: percona-platform/checkout@v3
       - name: Slack Notification
-        uses: percona-platform/action-slack-notify@v2
+        run: Fail
+#        uses: percona-platform/action-slack-notify@v2
 
