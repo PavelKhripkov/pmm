@@ -37,7 +37,7 @@ jobs:
       - name: My check
         env:
           GOLANGCI_LINT_REDIRECT: ${{ fromJson('["this1", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request && 1] }}
-          TTT: ${{ github.event.pull_request != null }}
+          TTT: ${{ github.event.push != null }}
         run: echo ${{ env.GOLANGCI_LINT_REDIRECT }}
 
       - name: Check out code into the working directory under the GOPATH
