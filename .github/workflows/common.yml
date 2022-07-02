@@ -34,6 +34,9 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
 
     steps:
+      - name: My check
+        run: echo '${{ github.event.pull_request && true }}'
+
       - name: Check out code into the working directory under the GOPATH
         uses: percona-platform/checkout@v3
         with:
