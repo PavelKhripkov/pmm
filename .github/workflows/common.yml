@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: My check
         env:
-          GOLANGCI_LINT_REDIRECT: ${{ fromJson('["this1", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[0] }}
+          GOLANGCI_LINT_REDIRECT: ${{ fromJson('["this1", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[${{ github.event.pull_request && 1 }}] }}
           TTT: ${{ github.event.pull_request && 1 }}
         run: echo ${{ env.GOLANGCI_LINT_REDIRECT }}
 
