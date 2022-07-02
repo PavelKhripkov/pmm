@@ -36,9 +36,9 @@ jobs:
     steps:
       - name: My check
         env:
-          GOLANGCI_LINT_REDIRECT: ${{ toJson('["this1", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[1] }}
+          GOLANGCI_LINT_REDIRECT: toJson('["this1", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[1]
           TTT: 123
-        run: echo TTT
+        run: echo GOLANGCI_LINT_REDIRECT
 
       - name: Check out code into the working directory under the GOPATH
         uses: percona-platform/checkout@v3
