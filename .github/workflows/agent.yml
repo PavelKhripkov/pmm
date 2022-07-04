@@ -57,6 +57,7 @@ jobs:
     env:
       GO_VERSION: ${{ inputs.go-version || '1.18.x' }}
       GOPATH: ${{ github.workspace }}
+      GOBIN: ${{ github.workspace }}/bin
       WORKING_DIR: ${{ github.workspace }}/src/github.com/percona/pmm
       MYSQL_IMAGE: ${{ matrix.images.mysql }}
       MONGO_IMAGE: ${{ matrix.images.mongo }}
