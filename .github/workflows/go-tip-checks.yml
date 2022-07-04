@@ -7,7 +7,6 @@ on:
 
 jobs:
   check:
-    name: Checks
     uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
     with:
       go-version: 'tip'
