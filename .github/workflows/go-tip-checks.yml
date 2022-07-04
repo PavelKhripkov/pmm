@@ -10,3 +10,23 @@ jobs:
     uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
     with:
       go-version: 'tip'
+
+  admin:
+    uses: percona/pmm/.github/workflows/admin.yml@main
+    with:
+      go-version: 'tip'
+
+  agent:
+    uses: percona/pmm/.github/workflows/agent.yml@main
+    with:
+      go-version: 'tip'
+
+  api:
+    uses: percona/pmm/.github/workflows/api.yml@main
+    with:
+      go-version: 'tip'
+
+  managed:
+    uses: percona/pmm/.github/workflows/managed.yml@main
+    with:
+      go-version: 'tip'
