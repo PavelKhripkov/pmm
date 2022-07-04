@@ -38,11 +38,11 @@ linters:
     # - depguard
     - exhaustive
     - gci
-    - goimports
-    - govet
-    - ineffassign
-    - nolintlint
-    - staticcheck
+    #- goimports
+    #- govet
+    #- ineffassign
+    #- nolintlint
+    #- staticcheck
 
 run:
   skip-dirs:
