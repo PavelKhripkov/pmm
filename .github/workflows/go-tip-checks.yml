@@ -8,8 +8,6 @@ on:
 jobs:
   check:
     name: Checks
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
-        with:
-          go-version: 'tip'
+    uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
+    with:
+      go-version: 'tip'
