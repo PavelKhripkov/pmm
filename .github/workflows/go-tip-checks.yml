@@ -10,6 +10,6 @@ jobs:
     name: Checks
     runs-on: ubuntu-22.04
     steps:
-      - uses: PavelKhripkov/pmm/.github/workflows/common.yml@main
+      - uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
         with:
           go-version: 'tip'
