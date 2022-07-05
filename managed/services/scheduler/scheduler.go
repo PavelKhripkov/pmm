@@ -365,7 +365,7 @@ func checkPreconditions(q *reform.Querier, data *models.ScheduledTaskData, enabl
 }
 
 func checkMongoDBBackupPreconditions(q *reform.Querier, mode models.BackupMode, serviceID, scheduleID string) error {
-	switch mode {
+	switch mode { //nolint:exhaustive
 	case models.PITR:
 		// PITR backup can be enabled only if there is no other scheduled backups.
 		tasks, err := models.FindScheduledTasks(q, models.ScheduledTasksFilter{
