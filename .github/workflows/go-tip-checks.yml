@@ -12,21 +12,21 @@ jobs:
       go-version: 'tip'
 
   admin:
-    uses: percona/pmm/.github/workflows/admin.yml@main
+    uses: PavelKhripkov/pmm/.github/workflows/admin.yml@main
     with:
       go-version: 'tip'
 
   agent:
-    uses: percona/pmm/.github/workflows/agent.yml@main
+    uses: PavelKhripkov/pmm/.github/workflows/agent.yml@main
     with:
       go-version: 'tip'
 
   api:
-    uses: percona/pmm/.github/workflows/api.yml@main
+    uses: PavelKhripkov/pmm/.github/workflows/api.yml@main
     with:
       go-version: 'tip'
 
   managed:
-    uses: percona/pmm/.github/workflows/managed.yml@main
+    uses: PavelKhripkov/pmm/.github/workflows/managed.yml@main
     with:
       go-version: 'tip'
