@@ -570,6 +570,10 @@ func migrateDB(ctx context.Context, sqlDB *sql.DB, dbName, dbAddress, dbUsername
 }
 
 func main() {
+	abc := make([]int, 0)
+	if len(abc) < 1 {
+		print("here1")
+	}
 	// empty version breaks much of pmm-managed logic
 	if version.Version == "" {
 		panic("pmm-managed version is not set during build.")
