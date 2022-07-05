@@ -35,14 +35,14 @@ linters:
   disable-all: true
   enable:
     # keep sorted
-    # - depguard
+#    - depguard
     - exhaustive
     - gci
-    #- goimports
-    #- govet
-    #- ineffassign
-    #- nolintlint
-    #- staticcheck
+#    - goimports
+    - govet
+    - ineffassign
+#    - nolintlint
+    - staticcheck
 
 run:
   skip-dirs:
@@ -50,3 +50,4 @@ run:
 
 issues:
   exclude-use-default: false
+
