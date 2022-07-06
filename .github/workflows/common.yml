@@ -27,7 +27,7 @@ jobs:
       matrix:
         go-version: [ tip, 1.17.x, 1.18.x ]
         excule:
-          - go-version: ${{ inputs.go-version == null && tip }}
+          - go-version: ${{ inputs.go-version == null && 'tip' }}
 
     env:
       GO_VERSION: ${{ matrix.go-version }}
