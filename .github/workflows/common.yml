@@ -27,7 +27,7 @@ jobs:
       matrix:
         go-version: [ tip, 1.17.x, 1.18.x ]
         exclude:
-          - go-version: on.workflow_call == null && 'tip'
+          - go-version: ${{ inputs.go-version }}
 
     env:
       GO_VERSION: ${{ matrix.go-version }}
