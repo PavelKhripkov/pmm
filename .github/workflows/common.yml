@@ -26,8 +26,8 @@ jobs:
     strategy:
       matrix:
         go-version: [ tip, 1.17.x, 1.18.x ]
-        excule:
-          - go-version: ${{ on.workflow_call.inputs == null && 'tip' }}
+        exclude:
+          - go-version: ${{ on.workflow_call == null && 'tip' }}
 
     env:
       GO_VERSION: ${{ matrix.go-version }}
