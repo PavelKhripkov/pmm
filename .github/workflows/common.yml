@@ -9,8 +9,6 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+*
 
   pull_request:
-    paths-ignore:
-      - "docs/**"
 
   workflow_call:
     inputs:
@@ -23,14 +21,9 @@ jobs:
   check:
     name: Checks
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        go-version: [ 1.18.x ]
-
-# ${{ fromJson(inputs.go-version || '[\"1.18.x\", \"1.17.x\"]' )}}
 
     env:
-      GO_VERSION: ${{ matrix.go-version }}
+      GO_VERSION: ${{ inputs.go-version || '1.18.x' }}
       GOPATH: ${{ github.workspace }}
       WORKING_DIR: ${{ github.workspace }}/src/github.com/percona/pmm
 
@@ -39,9 +32,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
 
     steps:
-      - name: My check
-        run: echo ${{ fromJson(inputs.go-version || '1.18.x' )}}
-
       - name: Check out code into the working directory under the GOPATH
         uses: percona-platform/checkout@v3
         with:
@@ -84,6 +74,8 @@ jobs:
         env:
           # use GITHUB_TOKEN because only it has access to GitHub Checks API
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # In case the workflow triggered by pull_request event, we want to redirect linter's output to reviewdog.
+          # The selection made through converting available cases to json and then choosing an element depending on logical value (true=1, false=0).
           GOLANGCI_LINT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
           GO_CONSISTENT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
         run: |
@@ -99,6 +91,7 @@ jobs:
         env:
           # use ROBOT_TOKEN for better reviewer's name
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
+          # See description of GOLANGCI_LINT_REDIRECT above.
           GOLANGCI_LINT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review"]')[github.event.pull_request != null] }}
         run: |
           bin/golangci-lint run --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
