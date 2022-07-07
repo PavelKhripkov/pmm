@@ -20,9 +20,12 @@ jobs:
   check:
     name: Checks
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        go-version: [ '1.18.x' ]
 
     env:
-      GO_VERSION: ${{ inputs.go-version || '1.18.x' }}
+      GO_VERSION: matrix.go-version
       GOPATH: ${{ github.workspace }}
       WORKING_DIR: ${{ github.workspace }}/src/github.com/percona/pmm
 
@@ -39,7 +42,7 @@ jobs:
           path: ${{ env.WORKING_DIR }}
 
       - name: My step
-        run: echo ${{ inputs.go-version }}
+        run: echo ${{ toJson(fromJson('[\"1.18.x\"]')) }}
 
       - name: Set up Go release
         if: env.GO_VERSION != 'tip'
