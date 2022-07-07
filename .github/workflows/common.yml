@@ -19,9 +19,6 @@ on:
         type: string
         default: tip
 
-env:
-  GO_VERSIONS_TO_TEST: '[\"1.18.x\", \"1.17.x\"]'
-
 jobs:
   myjob:
     runs-on: ubuntu-22.04
