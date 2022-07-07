@@ -8,8 +8,7 @@ on:
 jobs:
   check:
     uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
-    with:
-      go-version: '["tip", "1.18.x"]'
+
 #
 #  admin:
 #    uses: PavelKhripkov/pmm/.github/workflows/admin.yml@test
