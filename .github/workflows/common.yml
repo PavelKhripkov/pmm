@@ -31,8 +31,8 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
 
     steps:
-      - name: My step
-        run: echo ${{ inputs.go-version }}
+#      - name: My step
+#        run: echo ${{ inputs.go-version }}
 
       - name: Check out code into the working directory under the GOPATH
         uses: percona-platform/checkout@v3
