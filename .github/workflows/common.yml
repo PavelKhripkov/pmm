@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        go-version: ${{ fromJson(inputs.go-version || GO_VERSIONS_TO_TEST) }}
+        go-version: ${{ fromJson(inputs.go-version || ${{ env.GO_VERSIONS_TO_TEST }}) }}
 
     env:
       GO_VERSION: ${{ matrix.go-version }}
