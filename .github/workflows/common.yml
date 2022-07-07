@@ -15,14 +15,13 @@ on:
         description: An array of Go versions to be tested against, in a format of json string.
         required: false
         type: string
-        default: '["tip"]'
+        default: '["tip", "1.18.x"]'
 
 
 jobs:
   check:
     name: Checks
     runs-on: ubuntu-22.04
-    continue-on-error: false
     strategy:
       fail-fast: false
       matrix:
