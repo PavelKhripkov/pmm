@@ -22,6 +22,8 @@ on:
 jobs:
   myjob:
     runs-on: ubuntu-22.04
+    env:
+      WORKING_DIR: ${{ github.workspace }}/src/github.com/percona/pmm
     defaults:
       run:
         working-directory: ${{ env.WORKING_DIR }}
