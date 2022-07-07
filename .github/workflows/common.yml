@@ -17,7 +17,7 @@ on:
         default: '["tip"]'
 
 env:
-  MYENV: test
+  GO_VERSIONS_TO_TEST: '["1.18.x"]'
 
 jobs:
   check:
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        go-version: ${{ fromJson(inputs.go-version || '["1.18.x"]') }}
+        go-version: ${{ fromJson(inputs.go-version || env.GO_VERSIONS_TO_TEST) }}
 
     env:
       GO_VERSION: ${{ matrix.go-version }}
