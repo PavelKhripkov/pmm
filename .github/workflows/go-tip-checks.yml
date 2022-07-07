@@ -1,32 +1,32 @@
-name: Go-tip
-
-on:
-  schedule:
-    # Every Sunday at 13:00
-    - cron: "*/5 * * * *"
-
-jobs:
-  check:
-    uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
-    with:
-      go-version: 'tip'
-
-  admin:
-    uses: PavelKhripkov/pmm/.github/workflows/admin.yml@test
-    with:
-      go-version: 'tip'
-
-  agent:
-    uses: PavelKhripkov/pmm/.github/workflows/agent.yml@test
-    with:
-      go-version: 'tip'
-
-  api:
-    uses: PavelKhripkov/pmm/.github/workflows/api.yml@test
-    with:
-      go-version: 'tip'
-
-  managed:
-    uses: PavelKhripkov/pmm/.github/workflows/managed.yml@test
-    with:
-      go-version: 'tip'
+#name: Go-tip
+#
+#on:
+#  schedule:
+#    # Every Sunday at 13:00
+#    - cron: "*/5 * * * *"
+#
+#jobs:
+#  check:
+#    uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
+#    with:
+#      go-version: 'tip'
+#
+#  admin:
+#    uses: PavelKhripkov/pmm/.github/workflows/admin.yml@test
+#    with:
+#      go-version: 'tip'
+#
+#  agent:
+#    uses: PavelKhripkov/pmm/.github/workflows/agent.yml@test
+#    with:
+#      go-version: 'tip'
+#
+#  api:
+#    uses: PavelKhripkov/pmm/.github/workflows/api.yml@test
+#    with:
+#      go-version: 'tip'
+#
+#  managed:
+#    uses: PavelKhripkov/pmm/.github/workflows/managed.yml@test
+#    with:
+#      go-version: 'tip'
