@@ -43,9 +43,6 @@ jobs:
           fetch-depth: 1
           path: ${{ env.WORKING_DIR }}
 
-      - name: My step
-        run: echo ${{ env.MYENV }}
-
       - name: Set up Go release
         if: env.GO_VERSION != 'tip'
         uses: percona-platform/setup-go@v2
