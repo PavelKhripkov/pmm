@@ -92,12 +92,15 @@ jobs:
           if out=$(bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number); then
             echo "$out" ${{ env.GOLANGCI_LINT_REDIRECT }}
           else
-            exit 5
+            exit 1
           fi
-          # bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
 
           # run it like this until it will be added to golangci-lint. https://github.com/golangci/golangci-lint/issues/288
-          bin/go-consistent -pedantic -exclude "tests" ./... ${{ env.GO_CONSISTENT_REDIRECT }}
+          if out=$(bin/go-consistent -pedantic -exclude "tests" ./...); then
+            echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
+          else
+            exit 1
+          fi
 
       - name: Run optional checks/linters
         env:
@@ -105,9 +108,12 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
           # See description of GOLANGCI_LINT_REDIRECT above.
           GOLANGCI_LINT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review"]')[github.event.pull_request != null] }}
-        run: |
-          bin/golangci-lint run --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
-
+        run: |   
+          if out=$(bin/golangci-lint run --out-format=line-number); then
+            echo "$out" ${{ env.GOLANGCI_LINT_REDIRECT }}
+          else
+            exit 1
+          fi
 
       - name: Test common API
         run: make test-common
