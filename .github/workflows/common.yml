@@ -92,7 +92,7 @@ jobs:
           if output=$(bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number); then
             echo "$output" ${{ env.GOLANGCI_LINT_REDIRECT }}
           fi
-#          bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
+          # bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
 
           # run it like this until it will be added to golangci-lint. https://github.com/golangci/golangci-lint/issues/288
           bin/go-consistent -pedantic -exclude "tests" ./... ${{ env.GO_CONSISTENT_REDIRECT }}
