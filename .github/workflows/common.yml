@@ -89,7 +89,7 @@ jobs:
           
           bin/go-sumtype ./...
           
-          bin/golangci-lint run -c=.golangci-required.yml --timeout=10m --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
+          bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
           
           #if out=$(bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number); then
           #  echo "$out" ${{ env.GOLANGCI_LINT_REDIRECT }}
