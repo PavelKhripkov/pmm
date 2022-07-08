@@ -92,7 +92,7 @@ jobs:
           if out=$(bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number); then
             echo "$out" ${{ env.GOLANGCI_LINT_REDIRECT }}
           else
-            exit 1
+            exit 5
           fi
           # bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
 
