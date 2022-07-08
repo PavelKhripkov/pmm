@@ -45,7 +45,6 @@ linters:
     - staticcheck
 
 run:
-  timeout: 10m
   skip-dirs:
     - agent/agents/mongodb/internal/
 
