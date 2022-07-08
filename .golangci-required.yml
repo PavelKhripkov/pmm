@@ -35,7 +35,7 @@ linters:
   disable-all: true
   enable:
     # keep sorted
-#    - depguard
+    - depguard
     - exhaustive
     - gci
 #    - goimports

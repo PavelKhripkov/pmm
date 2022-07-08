@@ -15,7 +15,7 @@ on:
         description: An array of Go versions to be tested against, in a format of json string.
         required: false
         type: string
-        default: '["tip", "1.18.x"]'
+        default: '["tip"]'
 
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        go-version: ${{ fromJson(inputs.go-version || '["1.18.x", "1.17.x"]') }}
+        go-version: ${{ fromJson(inputs.go-version || '["1.18.x"]') }}
 
     env:
       GO_VERSION: ${{ matrix.go-version }}
