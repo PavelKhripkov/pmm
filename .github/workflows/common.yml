@@ -92,7 +92,7 @@ jobs:
           echo "$out" ${{ env.REDIRECT }}
           
           if [[ $exit_code -gt 1 ]]; then
-          echo Here123
+            echo Here123
             exit $exit_code
           fi
 
