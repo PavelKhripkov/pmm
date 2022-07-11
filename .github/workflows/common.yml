@@ -99,7 +99,7 @@ jobs:
 
       - name: Run go-consistent
         env:
-          COMMAND: "bin/go-consistent -pedantic -exclude "tests" ./..."
+          COMMAND: 'bin/go-consistent -pedantic -exclude "tests" ./...'
           REDIRECT: "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
