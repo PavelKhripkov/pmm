@@ -92,7 +92,6 @@ jobs:
               exit $exit_code
             else
               echo "$out" ${{ env.REDIRECT }}
-              echo "Exit code is $?"
             fi
           else
             echo "$out"
