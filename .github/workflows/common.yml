@@ -90,15 +90,19 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if ! out=$( ${{ env.COMMAND }} ); then
+            echo Here1
             exit_code=$?
+            echo "Exit code is $exit_code"
             if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
+              echo Here2
               echo "$out"
-              echo "Exit code is $exit_code"
               exit $exit_code
             else
+              echo Here3
               echo "$out" ${{ env.REDIRECT }}
             fi
           else
+            echo Here4
             echo "$out"
           fi
 
