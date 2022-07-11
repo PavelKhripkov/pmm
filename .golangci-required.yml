@@ -38,10 +38,10 @@ linters:
     - depguard
     - exhaustive
     - gci
-#    - goimports
+    - goimports
     - govet
     - ineffassign
-#    - nolintlint
+    - nolintlint
     - staticcheck
 
 run:

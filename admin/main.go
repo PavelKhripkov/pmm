@@ -82,6 +82,10 @@ func main() {
 	if len(abc) < 1 {
 		print("here1")
 	}
+	qwe := []int{}
+	if len(qwe) < 1 {
+		print("here1")
+	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 
