@@ -100,9 +100,10 @@ jobs:
           #bin/go-consistent -pedantic -exclude "tests" ./... ${{ env.GO_CONSISTENT_REDIRECT }}
 
           # run it like this until it will be added to golangci-lint. https://github.com/golangci/golangci-lint/issues/288
-          if out=$(bin/go-consistent -pedantic -exclude "tests" ./...); then
-            echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
-          else
+          out=$(bin/go-consistent -pedantic -exclude "tests" ./...)
+          exit_code=$?
+          echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
+          if [ $exit_code -nq 0 ]; then
             exit 1
           fi
 
