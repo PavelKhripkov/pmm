@@ -36,8 +36,8 @@ import (
 )
 
 func main() {
-	abc := make([]int, 0)
-	if len(abc) < 1 {
+	asd := make([]int, 0)
+	if len(asd) < 1 {
 		print("here1")
 	}
 	kingpin.CommandLine.Name = "pmm-admin"
