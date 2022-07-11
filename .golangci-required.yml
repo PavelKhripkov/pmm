@@ -43,6 +43,7 @@ linters:
     - ineffassign
     - nolintlint
     - staticcheck
+    - forbidigo
 
 run:
   timeout: 5m
