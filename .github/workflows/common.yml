@@ -82,7 +82,7 @@ jobs:
       - name: Run golangci-lint
         env:
           COMMAND: "bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number"
-          REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error"
+          REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if ! out=$( ${{ env.COMMAND }} ); then
