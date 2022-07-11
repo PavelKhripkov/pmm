@@ -87,20 +87,17 @@ jobs:
           # The selection made through converting available cases to json and then choosing an element depending on logical value (true=1, false=0).
           REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
         run: |
-          if ${{ github.event.pull_request != null }}; then
-            echo Here111
+          if ! out=$( bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ); then
+            exit_code=$?
+            if [ $exit_code -gt 1 ] || [ ${{ github.event.pull_request == null }} ]; then
+              echo "$out"
+              exit $exit_code
+            else
+              echo "$out" | bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true
+            fi
+          else
+            echo "$out"
           fi
-          #if ! out=$( ${{ env.COMMAND }} ); then
-          #  exit_code=$?
-          #  if [ $exit_code -gt 1 ] || [ -z "${{ github.event.pull_request }}" ]; then
-          #    echo "$out"
-          #    exit $exit_code
-          #  else
-          #    echo "$out" ${{ env.REDIRECT }}
-          #  fi
-          #else
-          #  echo "$out"
-          #fi
 
 #      - name: Run go-consistent
 #        env:
