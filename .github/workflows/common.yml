@@ -76,6 +76,10 @@ jobs:
       - name: Check build
         run: make release
 
+      - name: Run check-license
+        run: |
+          # go run ../.github/check-license.go # TODO: This repo has multiple licenses, fix checker. https://jira.percona.com/browse/PMM-10118
+
       - name: Run go-sumtype
         run: bin/go-sumtype ./...
 
