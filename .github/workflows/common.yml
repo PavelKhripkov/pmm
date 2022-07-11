@@ -81,45 +81,42 @@ jobs:
 
       - name: Run golangci-lint
         env:
+          COMMAND: "bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number"
+          REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMAND: bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number
-          # In case the workflow triggered by pull_request event, we want to redirect linter's output to reviewdog.
-          # The selection made through converting available cases to json and then choosing an element depending on logical value (true=1, false=0).
-          REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
         run: |
-          if ! out=$( bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ); then
+          if ! out=$( ${{ env.COMMAND }} ); then
+            echo Here1
             exit_code=$?
             if [ $exit_code -gt 1 ] || [ ${{ github.event.pull_request == null }} ]; then
+              echo Here2
               echo "$out"
               exit $exit_code
             else
-              echo "$out" | bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true
+              echo Here3
+              echo "$out" ${{ env.REDIRECT }}
             fi
           else
+            echo Here4
             echo "$out"
           fi
 
 #      - name: Run go-consistent
 #        env:
+#          COMMAND: "bin/go-consistent -pedantic -exclude "tests" ./..."
+#          REDIRECT: "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"
 #          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          GO_CONSISTENT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
 #        run: |
-#          #bin/go-consistent -pedantic -exclude "tests" ./... ${{ env.GO_CONSISTENT_REDIRECT }}
-#
-#          # run it like this until it will be added to golangci-lint. https://github.com/golangci/golangci-lint/issues/288
-#          #out=$(bin/go-consistent -pedantic -exclude "tests" ./...)
-#          #exit_code=$?
-#          #echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
-#          #if [ $exit_code -nq 0 ]; then
-#          #  exit 1
-#          #fi
-#
-#
-#          if out=$(bin/go-consistent -pedantic -exclude "tests" ./...); then
-#            echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
+#          if ! out=$( ${{ env.COMMAND }} ); then
+#            exit_code=$?
+#            if [ $exit_code -gt 1 ] || [ ${{ github.event.pull_request == null }} ]; then
+#              echo "$out"
+#              exit $exit_code
+#            else
+#              echo "$out" ${{ env.REDIRECT }}
+#            fi
 #          else
-#            #echo "$out"
-#            exit 1
+#            echo "$out"
 #          fi
 
       - name: Run optional checks/linters
