@@ -88,6 +88,7 @@ jobs:
           REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
         run: |
           out=$( ${{ env.COMMAND }} )
+          echo "exit code is $exit_code"
           exit_code=$?
           echo "$out" ${{ env.REDIRECT }}
           
