@@ -78,6 +78,11 @@ func main() {
 		logrus.SetReportCaller(true) // https://github.com/sirupsen/logrus/issues/954
 	}
 
+	abc := make([]int, 0)
+	if len(abc) < 1 {
+		print("here1")
+	}
+
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// handle termination signals
