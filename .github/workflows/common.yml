@@ -93,6 +93,7 @@ jobs:
             exit_code=$?
             if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
               echo "$out"
+              echo "Exit code is $exit_code"
               exit $exit_code
             else
               echo "$out" ${{ env.REDIRECT }}
