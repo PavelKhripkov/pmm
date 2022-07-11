@@ -129,7 +129,7 @@ jobs:
           if out=$(bin/go-consistent -pedantic -exclude "tests" ./...); then
             echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
           else
-            echo "$out"
+            #echo "$out"
             exit 1
           fi
 
