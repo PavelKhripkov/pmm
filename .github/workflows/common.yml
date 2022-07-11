@@ -76,62 +76,48 @@ jobs:
       - name: Check build
         run: make release
 
-      - name: Run go-sumtype
-        env:
-          # use GITHUB_TOKEN because only it has access to GitHub Checks API
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # In case the workflow triggered by pull_request event, we want to redirect linter's output to reviewdog.
-          # The selection made through converting available cases to json and then choosing an element depending on logical value (true=1, false=0).
-          GOLANGCI_LINT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
-          GO_CONSISTENT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
-        run: |
-          # go run ../.github/check-license.go # TODO: This repo has multiple licenses, fix checker. https://jira.percona.com/browse/PMM-10118
-          
-          bin/go-sumtype ./...
+#      - name: Run go-sumtype
+#        run: bin/go-sumtype ./...
 
       - name: Run golangci-lint
         env:
-          # use GITHUB_TOKEN because only it has access to GitHub Checks API
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMAND: bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number
           # In case the workflow triggered by pull_request event, we want to redirect linter's output to reviewdog.
           # The selection made through converting available cases to json and then choosing an element depending on logical value (true=1, false=0).
-          GOLANGCI_LINT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
-          GO_CONSISTENT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
+          REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
         run: |
-          bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number ${{ env.GOLANGCI_LINT_REDIRECT }}
+          out=$( ${{ env.COMMAND }} )
+          exit_code=$?
+          echo "$out" ${{ env.REDIRECT }}
           
-          #if out=$(bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number); then
-          #  echo "$out" ${{ env.GOLANGCI_LINT_REDIRECT }}
-          #else
-          #  exit 1
-          #fi
-
-      - name: Run go-consistent
-        env:
-          # use GITHUB_TOKEN because only it has access to GitHub Checks API
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # In case the workflow triggered by pull_request event, we want to redirect linter's output to reviewdog.
-          # The selection made through converting available cases to json and then choosing an element depending on logical value (true=1, false=0).
-          GOLANGCI_LINT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
-          GO_CONSISTENT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
-        run: |
-          #bin/go-consistent -pedantic -exclude "tests" ./... ${{ env.GO_CONSISTENT_REDIRECT }}
-
-          # run it like this until it will be added to golangci-lint. https://github.com/golangci/golangci-lint/issues/288
-          #out=$(bin/go-consistent -pedantic -exclude "tests" ./...)
-          #exit_code=$?
-          #echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
-          #if [ $exit_code -nq 0 ]; then
-          #  exit 1
-          #fi
-          
-          
-          if out=$(bin/go-consistent -pedantic -exclude "tests" ./...); then
-            echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
-          else
-            #echo "$out"
-            exit 1
+          if [[ $exit_code -gt 1 ]]; then
+          echo Here123
+            exit $exit_code
           fi
+
+#      - name: Run go-consistent
+#        env:
+#          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          GO_CONSISTENT_REDIRECT: ${{ fromJson('["", "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"]')[github.event.pull_request != null] }}
+#        run: |
+#          #bin/go-consistent -pedantic -exclude "tests" ./... ${{ env.GO_CONSISTENT_REDIRECT }}
+#
+#          # run it like this until it will be added to golangci-lint. https://github.com/golangci/golangci-lint/issues/288
+#          #out=$(bin/go-consistent -pedantic -exclude "tests" ./...)
+#          #exit_code=$?
+#          #echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
+#          #if [ $exit_code -nq 0 ]; then
+#          #  exit 1
+#          #fi
+#
+#
+#          if out=$(bin/go-consistent -pedantic -exclude "tests" ./...); then
+#            echo "$out" ${{ env.GO_CONSISTENT_REDIRECT }}
+#          else
+#            #echo "$out"
+#            exit 1
+#          fi
 
       - name: Run optional checks/linters
         env:
