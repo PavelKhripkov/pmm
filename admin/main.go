@@ -99,6 +99,11 @@ func main() {
 		cancel()
 	}()
 
+	xcv := []int{}
+	if len(xcv) < 1 {
+		print("here1")
+	}
+
 	allCommands := map[string]commands.Command{
 		management.RegisterC.FullCommand():   &management.Register,
 		management.UnregisterC.FullCommand(): &management.Unregister,
