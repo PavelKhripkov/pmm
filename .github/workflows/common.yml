@@ -100,16 +100,6 @@ jobs:
             echo "$out"
           fi
 
-#          out=$( ${{ env.COMMAND }} ); exit_code=$?
-#          echo "Exit code is $exit_code"
-#          if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-#            echo Here1
-#            echo "$out"
-#            exit $exit_code
-#          else
-#            echo Here2
-#            echo "$out" ${{ env.REDIRECT }}
-#          fi
 
 #      - name: Run go-consistent
 #        env:
