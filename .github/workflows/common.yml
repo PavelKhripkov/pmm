@@ -76,12 +76,12 @@ jobs:
       - name: Check build
         run: make release
 
-      - name: Run check-license
-        run: |
-          # go run ../.github/check-license.go # TODO: This repo has multiple licenses, fix checker. https://jira.percona.com/browse/PMM-10118
-
-      - name: Run go-sumtype
-        run: bin/go-sumtype ./...
+#      - name: Run check-license
+#        run: |
+#          # go run ../.github/check-license.go # TODO: This repo has multiple licenses, fix checker. https://jira.percona.com/browse/PMM-10118
+#
+#      - name: Run go-sumtype
+#        run: bin/go-sumtype ./...
 
       - name: Run golangci-lint
         env:
@@ -91,57 +91,48 @@ jobs:
         run: |
           out=$( ${{ env.COMMAND }} )
           exit_code=$?
-          if [ $exit_code -ne 0 ]; then
-            echo "Exit code is $exit_code"
-            echo Here1
-            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-              echo Here2
-              echo "$out"
-              exit $exit_code
-            else
-              echo Here3
-              echo "$out" ${{ env.REDIRECT }}
-            fi
-          else
-            echo Here4
+          if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
             echo "$out"
+            exit $exit_code
+          else
+            echo "$out" ${{ env.REDIRECT }}
           fi
 
-      - name: Run go-consistent
-        env:
-          COMMAND: 'bin/go-consistent -pedantic -exclude "tests" ./...'
-          REDIRECT: "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          if ! out=$( ${{ env.COMMAND }} ); then
-            exit_code=$?
-            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-              echo "$out"
-              exit $exit_code
-            else
-              echo "$out" ${{ env.REDIRECT }}
-            fi
-          else
-            echo "$out"
-          fi
-
-      - name: Run optional checks/linters
-        env:
-          COMMAND: "bin/golangci-lint run --out-format=line-number"
-          REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review"
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          if ! out=$( ${{ env.COMMAND }} ); then
-            exit_code=$?
-            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-              echo "$out"
-              exit $exit_code
-            else
-              echo "$out" ${{ env.REDIRECT }}
-            fi
-          else
-            echo "$out"
-          fi
+#      - name: Run go-consistent
+#        env:
+#          COMMAND: 'bin/go-consistent -pedantic -exclude "tests" ./...'
+#          REDIRECT: "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"
+#          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
+#        run: |
+#          if ! out=$( ${{ env.COMMAND }} ); then
+#            exit_code=$?
+#            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
+#              echo "$out"
+#              exit $exit_code
+#            else
+#              echo "$out" ${{ env.REDIRECT }}
+#            fi
+#          else
+#            echo "$out"
+#          fi
+#
+#      - name: Run optional checks/linters
+#        env:
+#          COMMAND: "bin/golangci-lint run --out-format=line-number"
+#          REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review"
+#          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
+#        run: |
+#          if ! out=$( ${{ env.COMMAND }} ); then
+#            exit_code=$?
+#            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
+#              echo "$out"
+#              exit $exit_code
+#            else
+#              echo "$out" ${{ env.REDIRECT }}
+#            fi
+#          else
+#            echo "$out"
+#          fi
 
       - name: Test common API
         run: make test-common
