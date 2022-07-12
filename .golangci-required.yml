@@ -35,16 +35,18 @@ linters:
   disable-all: true
   enable:
     # keep sorted
-#    - depguard
+    - depguard
     - exhaustive
     - gci
-#    - goimports
+    - goimports
     - govet
     - ineffassign
-#    - nolintlint
+    - nolintlint
     - staticcheck
+    - forbidigo
 
 run:
+  timeout: 5m
   skip-dirs:
     - agent/agents/mongodb/internal/
 

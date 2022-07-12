@@ -36,10 +36,6 @@ import (
 )
 
 func main() {
-	abc := make([]int, 0)
-	if len(abc) < 1 {
-		print("here1")
-	}
 	kingpin.CommandLine.Name = "pmm-admin"
 	kingpin.CommandLine.Help = fmt.Sprintf("Version %s", version.Version)
 	kingpin.CommandLine.HelpFlag.Short('h')
