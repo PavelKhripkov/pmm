@@ -32,7 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        go-version: ${{ fromJson(inputs.go-version || '["1.18.x"]') }}
+        go-version: ${{ fromJson(inputs.go-version || '["1.17.x"]') }}
     timeout-minutes: 30
 
     env:
@@ -91,6 +91,9 @@ jobs:
 
       - name: Setup dev-container
         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
+
+      - name: My test
+        run: go version
 
       - name: Run tests
         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all

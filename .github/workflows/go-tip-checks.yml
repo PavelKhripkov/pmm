@@ -10,7 +10,7 @@ env:
 
 jobs:
   check:
-    uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
+    uses: PavelKhripkov/pmm/.github/workflows/managed.yml@test
     with:
       go-version: env.go_versions
 
@@ -32,6 +32,6 @@ jobs:
 #      go-version: 'tip'
 #
 #  managed:
-#    uses: PavelKhripkov/pmm/.github/workflows/managed.yml@test
+#    uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
 #    with:
 #      go-version: 'tip'
