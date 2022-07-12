@@ -89,16 +89,28 @@ jobs:
           REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          out=$( ${{ env.COMMAND }} ); exit_code=$?
-          echo "Exit code is $exit_code"
-          if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-            echo Here1
-            echo "$out"
-            exit $exit_code
+          if out=$( ${{ env.COMMAND }} ); exit_code=$?; [ $exit_code -ne 0 ]; then
+            exit_code=$?
+            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
+              echo "$out"
+              exit $exit_code
+            else
+              echo "$out" ${{ env.REDIRECT }}
+            fi
           else
-            echo Here2
-            echo "$out" ${{ env.REDIRECT }}
+            echo "$out"
           fi
+
+#          out=$( ${{ env.COMMAND }} ); exit_code=$?
+#          echo "Exit code is $exit_code"
+#          if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
+#            echo Here1
+#            echo "$out"
+#            exit $exit_code
+#          else
+#            echo Here2
+#            echo "$out" ${{ env.REDIRECT }}
+#          fi
 
 #      - name: Run go-consistent
 #        env:
@@ -106,7 +118,7 @@ jobs:
 #          REDIRECT: "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"
 #          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
 #        run: |
-#          if ! out=$( ${{ env.COMMAND }} ); then
+#          if out=$( ${{ env.COMMAND }} ); exit_code=$?; [ $exit_code -ne 0 ]; then
 #            exit_code=$?
 #            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
 #              echo "$out"
