@@ -36,10 +36,6 @@ import (
 )
 
 func main() {
-	asd := make([]int, 0)
-	if len(asd) < 1 {
-		print("here1")
-	}
 	kingpin.CommandLine.Name = "pmm-admin"
 	kingpin.CommandLine.Help = fmt.Sprintf("Version %s", version.Version)
 	kingpin.CommandLine.HelpFlag.Short('h')
@@ -78,15 +74,6 @@ func main() {
 		logrus.SetReportCaller(true) // https://github.com/sirupsen/logrus/issues/954
 	}
 
-	abc := make([]int, 0)
-	if len(abc) < 1 {
-		print("here1")
-	}
-	qwe := []int{}
-	if len(qwe) < 1 {
-		print("here1")
-	}
-
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// handle termination signals
@@ -98,11 +85,6 @@ func main() {
 		logrus.Warnf("Got %s, shutting down...", unix.SignalName(s.(unix.Signal)))
 		cancel()
 	}()
-
-	xcv := []int{}
-	if len(xcv) < 1 {
-		print("here1")
-	}
 
 	allCommands := map[string]commands.Command{
 		management.RegisterC.FullCommand():   &management.Register,
