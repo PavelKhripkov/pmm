@@ -89,8 +89,7 @@ jobs:
           REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          out=$( ${{ env.COMMAND }} )
-          exit_code=$?
+          out=$( ${{ env.COMMAND }} ); exit_code=$?
           echo "Exit code is $exit_code"
           if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
             echo Here1
