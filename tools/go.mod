@@ -13,7 +13,7 @@ require (
 	github.com/go-openapi/runtime v0.24.1
 	github.com/go-openapi/spec v0.20.4
 	github.com/go-swagger/go-swagger v0.29.0
-	github.com/golangci/golangci-lint v1.46.3-0.20220711075913-5e183652bafe
+	github.com/golangci/golangci-lint v1.46.3-0.20220710184449-ed4befe5ef3c
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3
 	github.com/jstemmer/go-junit-report v1.0.0
 	github.com/mwitkow/go-proto-validators v0.3.2
