@@ -144,6 +144,10 @@ func main() {
 		commands.SummaryC.FullCommand():    &commands.Summary,
 		commands.ConfigC.FullCommand():     &commands.Config,
 	}
+	asd := make([]int, 0)
+	if len(asd) < 1 {
+		print("here1")
+	}
 	command := allCommands[cmd]
 
 	if command == nil {
