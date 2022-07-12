@@ -5,14 +5,9 @@ on:
     # Every Sunday at 13:00
     - cron: "*/5 * * * *"
 
-env:
-  go_versions: '["1.16.x"]'
-
 jobs:
   check:
     uses: PavelKhripkov/pmm/.github/workflows/managed.yml@test
-    with:
-      go-version: env.go_versions
 
 
 #
