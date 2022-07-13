@@ -95,8 +95,8 @@ jobs:
           chmod +x /usr/local/bin/gimme
           gimme master
           
-          rm -fr /usr/local/go
-          mv -f ~/.gimme/versions/go /usr/local/go
+          sudo rm -fr /usr/local/go
+          sudo mv -f ~/.gimme/versions/go /usr/local/go
 
 #       - name: Setup dev-container
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
