@@ -102,7 +102,7 @@ jobs:
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
         
       - name: My test
-        run: go version
+        run: ~/.gimme/versions/go/bin/go version
 
 #       - name: Run tests
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all
