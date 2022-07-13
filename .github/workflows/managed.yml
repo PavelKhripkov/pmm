@@ -89,20 +89,20 @@ jobs:
         continue-on-error: true
         run: docker cp ~/go/pkg/mod pmm-managed-server:/root/go/pkg/mod
 
-      - name: Setup Go
-        run: |
-          curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.4/gimme -o /usr/local/bin/gimme
-          chmod +x /usr/local/bin/gimme
-          gimme master
+#       - name: Setup Go
+#         run: |
+#           curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.4/gimme -o /usr/local/bin/gimme
+#           chmod +x /usr/local/bin/gimme
+#           gimme master
           
-          sudo rm -fr /usr/bin/go
-          sudo mv -f ~/.gimme/versions/go/bin/go /usr/bin/go
+#           sudo rm -fr /usr/bin/go
+#           sudo mv -f ~/.gimme/versions/go/bin/go /usr/bin/go
 
-#       - name: Setup dev-container
-#         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
+      - name: Setup dev-container
+        run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
         
-      - name: My test
-        run: go version
+#       - name: My test
+#         run: go version
 
 #       - name: Run tests
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all
