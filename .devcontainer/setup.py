@@ -47,7 +47,7 @@ def install_go():
     ])
 
     gimme_go_version = 'master' if GO_VERSION == 'tip' else GO_VERSION
-    go_version = subprocess.check_output("gimme -r " + gimme_go_version, shell=True).strip()
+    go_version = subprocess.check_output("gimme " + gimme_go_version, shell=True).strip()
 
     run_commands([
         "gimme " + go_version,
