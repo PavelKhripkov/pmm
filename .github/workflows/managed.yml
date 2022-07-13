@@ -23,7 +23,7 @@ on:
         description: An array of Go versions to be tested against, in a format of json string.
         required: false
         type: string
-        default: '["1.17.x"]'
+        default: '["tip"]'
 
 jobs:
   test:
