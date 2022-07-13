@@ -96,7 +96,7 @@ jobs:
           gimme master
           
           sudo rm -fr /usr/bin/go
-          sudo mv -f ~/.gimme/versions/go /usr/bin/go
+          sudo mv -f ~/.gimme/versions/go/bin/go /usr/bin/go
 
 #       - name: Setup dev-container
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
