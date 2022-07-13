@@ -95,13 +95,14 @@ jobs:
           chmod +x /usr/local/bin/gimme
           gimme master
           
-          which go
+          rm -fr /usr/bin/go
+          mv -f ~/.gimme/versions/go /usr/bin/go
 
 #       - name: Setup dev-container
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
         
       - name: My test
-        run: ~/.gimme/versions/go/bin/go version
+        run: go version
 
 #       - name: Run tests
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all
