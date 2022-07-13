@@ -94,6 +94,8 @@ jobs:
           curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.4/gimme -o /usr/local/bin/gimme
           chmod +x /usr/local/bin/gimme
           gimme master
+          
+          which go
 
 #       - name: Setup dev-container
 #         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
