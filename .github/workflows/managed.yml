@@ -90,10 +90,13 @@ jobs:
         run: docker cp ~/go/pkg/mod pmm-managed-server:/root/go/pkg/mod
 
       - name: Check git
-        run: git version
+        run: |
+          curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.4/gimme -o /usr/local/bin/gimme
+          chmod +x /usr/local/bin/gimme
+          gimme 1.18.1
 
-      - name: Setup dev-container
-        run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
+#       - name: Setup dev-container
+#         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
         
       - name: My test
         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server go version
