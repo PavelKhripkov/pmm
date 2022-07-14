@@ -54,6 +54,7 @@ def install_go():
         go_gimme_dir = 'go{go_version}.linux.amd64'.format(go_version=go_version)
         
     run_commands([
+        "cat /etc/os-release",
         "apt update",
         "apt install -y git",
         "git version",
