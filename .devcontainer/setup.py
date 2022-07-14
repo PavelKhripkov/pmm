@@ -42,7 +42,7 @@ def install_go():
     """Installs Go toolchain."""
 
     run_commands([
-        "curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.5/gimme -o /usr/local/bin/gimme",
+        "curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.4/gimme -o /usr/local/bin/gimme",
         "chmod +x /usr/local/bin/gimme"
     ])
 
@@ -53,7 +53,7 @@ def install_go():
         go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
         go_gimme_dir = 'go{go_version}.linux.amd64'.format(go_version=go_version)
 
-    os.setenv("GIMME_TYPE", "git")
+    os.environ["GIMME_TYPE"] = "git"
     run_commands([
         "gimme " + go_version,
         "rm -fr /usr/local/go",
