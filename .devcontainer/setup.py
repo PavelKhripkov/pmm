@@ -50,6 +50,8 @@ def install_go():
         commands = [
         "git clone --depth=1 https://go.googlesource.com/go $HOME/gotip",
         "cd $HOME/gotip/src",
+        "pwd",
+        "ll",
         "./make.bash",
         "export GOROOT=$HOME/gotip",
         "export $HOME/gotip/bin"
