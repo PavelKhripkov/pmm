@@ -52,7 +52,8 @@ def install_go():
     else:
         go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
         go_gimme_dir = 'go{go_version}.linux.amd64'.format(go_version=go_version)
-        
+
+    os.setenv("GIMME_TYPE", "git")
     run_commands([
         "gimme " + go_version,
         "rm -fr /usr/local/go",
