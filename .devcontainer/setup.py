@@ -53,10 +53,10 @@ def install_go():
             "cd $HOME/gotip/src && ./make.bash",
             # "export GOROOT=$HOME/gotip",
             # "export PATH=$PATH:$HOME/gotip/bin",
-            "update-alternatives --install '/usr/bin/go' 'go' '$HOME/gotip/bin/go' 0",
+            "update-alternatives --install /usr/bin/go go $HOME/gotip/bin/go 0",
             "update-alternatives --set go $HOME/gotip/bin/go",
-            "update-alternatives --install '/usr/bin/gofmt' 'gofmt' '$HOME/gotip/bin/gofmt' 0",
-            "update-alternatives --set gofmt '$HOME/gotip/bin/gofmt",
+            "update-alternatives --install /usr/bin/gofmt gofmt $HOME/gotip/bin/gofmt 0",
+            "update-alternatives --set gofmt $HOME/gotip/bin/gofmt",
             # "mkdir -p /root/go/bin",
             "go version",
             "go env"
