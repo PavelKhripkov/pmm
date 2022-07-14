@@ -58,93 +58,84 @@ jobs:
           fetch-depth: 1
           path: ${{ env.WORKING_DIR }}
 
-      - name: Enable Go build cache
-        uses: percona-platform/cache@v2
-        with:
-          path: ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-${{ hashFiles('**') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-
+#      - name: Enable Go build cache
+#        uses: percona-platform/cache@v2
+#        with:
+#          path: ~/.cache/go-build
+#          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-${{ hashFiles('**') }}
+#          restore-keys: |
+#            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-
+#            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-
+#
+#      - name: Enable Go modules cache
+#        uses: percona-platform/cache@v2
+#        with:
+#          path: ~/go/pkg/mod
+#          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-${{ hashFiles('**/go.sum') }}
+#          restore-keys: |
+#            ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-
 
-      - name: Enable Go modules cache
-        uses: percona-platform/cache@v2
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-
-
-      - name: Download Go modules
-        run: go mod download
+#      - name: Download Go modules
+#        run: go mod download
 
       - name: Initialize CI environment
         run: make env-compose-up
 
-      - name: Restore Go build cache
-        continue-on-error: true
-        run: docker cp ~/.cache/go-build pmm-managed-server:/root/.cache/go-build
-
-      - name: Restore Go modules cache
-        continue-on-error: true
-        run: docker cp ~/go/pkg/mod pmm-managed-server:/root/go/pkg/mod
-
-      - name: Setup Go
-        run: |
-         curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.4/gimme -o /usr/local/bin/gimme
-         chmod +x /usr/local/bin/gimme
-         gimme master
-        
-         sudo rm -fr /usr/bin/go
-         sudo mv -f ~/.gimme/versions/go/bin/go /usr/bin/go
+#      - name: Restore Go build cache
+#        continue-on-error: true
+#        run: docker cp ~/.cache/go-build pmm-managed-server:/root/.cache/go-build
+#
+#      - name: Restore Go modules cache
+#        continue-on-error: true
+#        run: docker cp ~/go/pkg/mod pmm-managed-server:/root/go/pkg/mod
 
       - name: Setup dev-container
         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
 
-      - name: Run tests
-        run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all
-
-      - name: Upload coverage results
-        uses: percona-platform/codecov-action@v1
-        with:
-         file: cover.out
-         flags: all,cover
-         functionalities: fix
-         env_vars: GO_VERSION,PMM_SERVER_IMAGE
-         fail_ci_if_error: false
-
-      - name: Upload coverage results
-        uses: percona-platform/codecov-action@v1
-        with:
-         file: crosscover.out
-         flags: all,crosscover
-         functionalities: fix
-         env_vars: GO_VERSION,PMM_SERVER_IMAGE
-         fail_ci_if_error: false
-
-      - name: Upload coverage results
-        uses: percona-platform/codecov-action@v1
-        with:
-         file: race-crosscover.out
-         flags: update,crosscover
-         functionalities: fix
-         env_vars: GO_VERSION,PMM_SERVER_IMAGE
-         fail_ci_if_error: false
-
-      - name: Cache
-        run: |
-         docker exec pmm-managed-server go clean -testcache
-         docker exec --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server find . -type d -name fuzzdata -exec rm -r {} +
-         rm -fr ~/.cache/go-build
-         mkdir -p ~/.cache
-         docker cp pmm-managed-server:/root/.cache/go-build ~/.cache/go-build
-
-      - name: Run debug commands on failure
-        if: ${{ failure() }}
-        run: |
-         env
-         go version
-         go env
-         pwd
-         git status
-         kubectl version
+#      - name: Run tests
+#        run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all
+#
+#      - name: Upload coverage results
+#        uses: percona-platform/codecov-action@v1
+#        with:
+#         file: cover.out
+#         flags: all,cover
+#         functionalities: fix
+#         env_vars: GO_VERSION,PMM_SERVER_IMAGE
+#         fail_ci_if_error: false
+#
+#      - name: Upload coverage results
+#        uses: percona-platform/codecov-action@v1
+#        with:
+#         file: crosscover.out
+#         flags: all,crosscover
+#         functionalities: fix
+#         env_vars: GO_VERSION,PMM_SERVER_IMAGE
+#         fail_ci_if_error: false
+#
+#      - name: Upload coverage results
+#        uses: percona-platform/codecov-action@v1
+#        with:
+#         file: race-crosscover.out
+#         flags: update,crosscover
+#         functionalities: fix
+#         env_vars: GO_VERSION,PMM_SERVER_IMAGE
+#         fail_ci_if_error: false
+#
+#      - name: Cache
+#        run: |
+#         docker exec pmm-managed-server go clean -testcache
+#         docker exec --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server find . -type d -name fuzzdata -exec rm -r {} +
+#         rm -fr ~/.cache/go-build
+#         mkdir -p ~/.cache
+#         docker cp pmm-managed-server:/root/.cache/go-build ~/.cache/go-build
+#
+#      - name: Run debug commands on failure
+#        if: ${{ failure() }}
+#        run: |
+#         env
+#         go version
+#         go env
+#         pwd
+#         git status
+#         kubectl version
