@@ -58,22 +58,22 @@ jobs:
           fetch-depth: 1
           path: ${{ env.WORKING_DIR }}
 
-      - name: Enable Go build cache
-        uses: percona-platform/cache@v2
-        with:
-          path: ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-${{ hashFiles('**') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-
+#      - name: Enable Go build cache
+#        uses: percona-platform/cache@v2
+#        with:
+#          path: ~/.cache/go-build
+#          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-${{ hashFiles('**') }}
+#          restore-keys: |
+#            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-${{ github.ref }}-
+#            ${{ runner.os }}-go-${{ env.GO_VERSION }}-build-
 
-      - name: Enable Go modules cache
-        uses: percona-platform/cache@v2
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-
+#      - name: Enable Go modules cache
+#        uses: percona-platform/cache@v2
+#        with:
+#          path: ~/go/pkg/mod
+#          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-${{ hashFiles('**/go.sum') }}
+#          restore-keys: |
+#            ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-
 
       - name: Download Go modules
         run: go mod download
@@ -81,13 +81,13 @@ jobs:
       - name: Initialize CI environment
         run: make env-compose-up
 
-      - name: Restore Go build cache
-        continue-on-error: true
-        run: docker cp ~/.cache/go-build pmm-managed-server:/root/.cache/go-build
+#      - name: Restore Go build cache
+#        continue-on-error: true
+#        run: docker cp ~/.cache/go-build pmm-managed-server:/root/.cache/go-build
 
-      - name: Restore Go modules cache
-        continue-on-error: true
-        run: docker cp ~/go/pkg/mod pmm-managed-server:/root/go/pkg/mod
+#      - name: Restore Go modules cache
+#        continue-on-error: true
+#        run: docker cp ~/go/pkg/mod pmm-managed-server:/root/go/pkg/mod
 
 #       - name: Setup Go
 #         run: |
