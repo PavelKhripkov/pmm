@@ -23,7 +23,7 @@ on:
         description: An array of Go versions to be tested against, in a format of json string.
         required: false
         type: string
-        default: '["1.18.1"]'
+        default: '["tip"]'
 
 jobs:
   test:
@@ -89,56 +89,65 @@ jobs:
         continue-on-error: true
         run: docker cp ~/go/pkg/mod pmm-managed-server:/root/go/pkg/mod
 
+#       - name: Setup Go
+#         run: |
+#           curl -sS https://raw.githubusercontent.com/travis-ci/gimme/v1.5.4/gimme -o /usr/local/bin/gimme
+#           chmod +x /usr/local/bin/gimme
+#           gimme master
+          
+#           sudo rm -fr /usr/bin/go
+#           sudo mv -f ~/.gimme/versions/go/bin/go /usr/bin/go
+
       - name: Setup dev-container
         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server .devcontainer/setup.py
+        
+#       - name: My test
+#         run: go version
 
-      - name: My test
-        run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm pmm-managed-server go version
+#       - name: Run tests
+#         run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all
 
-      - name: Run tests
-        run: docker exec -i --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server make test-all
+#       - name: Upload coverage results
+#         uses: percona-platform/codecov-action@v1
+#         with:
+#           file: cover.out
+#           flags: all,cover
+#           functionalities: fix
+#           env_vars: GO_VERSION,PMM_SERVER_IMAGE
+#           fail_ci_if_error: false
 
-      - name: Upload coverage results
-        uses: percona-platform/codecov-action@v1
-        with:
-          file: cover.out
-          flags: all,cover
-          functionalities: fix
-          env_vars: GO_VERSION,PMM_SERVER_IMAGE
-          fail_ci_if_error: false
+#       - name: Upload coverage results
+#         uses: percona-platform/codecov-action@v1
+#         with:
+#           file: crosscover.out
+#           flags: all,crosscover
+#           functionalities: fix
+#           env_vars: GO_VERSION,PMM_SERVER_IMAGE
+#           fail_ci_if_error: false
 
-      - name: Upload coverage results
-        uses: percona-platform/codecov-action@v1
-        with:
-          file: crosscover.out
-          flags: all,crosscover
-          functionalities: fix
-          env_vars: GO_VERSION,PMM_SERVER_IMAGE
-          fail_ci_if_error: false
+#       - name: Upload coverage results
+#         uses: percona-platform/codecov-action@v1
+#         with:
+#           file: race-crosscover.out
+#           flags: update,crosscover
+#           functionalities: fix
+#           env_vars: GO_VERSION,PMM_SERVER_IMAGE
+#           fail_ci_if_error: false
 
-      - name: Upload coverage results
-        uses: percona-platform/codecov-action@v1
-        with:
-          file: race-crosscover.out
-          flags: update,crosscover
-          functionalities: fix
-          env_vars: GO_VERSION,PMM_SERVER_IMAGE
-          fail_ci_if_error: false
+#       - name: Cache
+#         run: |
+#           docker exec pmm-managed-server go clean -testcache
+#           docker exec --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server find . -type d -name fuzzdata -exec rm -r {} +
+#           rm -fr ~/.cache/go-build
+#           mkdir -p ~/.cache
+#           docker cp pmm-managed-server:/root/.cache/go-build ~/.cache/go-build
 
-      - name: Cache
-        run: |
-          docker exec pmm-managed-server go clean -testcache
-          docker exec --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server find . -type d -name fuzzdata -exec rm -r {} +
-          rm -fr ~/.cache/go-build
-          mkdir -p ~/.cache
-          docker cp pmm-managed-server:/root/.cache/go-build ~/.cache/go-build
-
-      - name: Run debug commands on failure
-        if: ${{ failure() }}
-        run: |
-          env
-          go version
-          go env
-          pwd
-          git status
-          kubectl version
+#       - name: Run debug commands on failure
+#         if: ${{ failure() }}
+#         run: |
+#           env
+#           go version
+#           go env
+#           pwd
+#           git status
+#           kubectl version
