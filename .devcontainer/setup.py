@@ -48,13 +48,13 @@ def install_go():
 
     if GO_VERSION == "tip":
         commands = [
-        "git clone --depth=1 https://go.googlesource.com/go $HOME/gotip",
-        "cd $HOME/gotip/src",
+        "git clone --depth=1 https://go.googlesource.com/go /root/gotip",
+        "cd /root/gotip/src",
         "pwd",
         "ll",
         "./make.bash",
-        "export GOROOT=$HOME/gotip",
-        "export $HOME/gotip/bin"
+        "export GOROOT=/root/gotip",
+        "export PATH=$PATH:/root/gotip/bin"
         ]
     else:
         go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
