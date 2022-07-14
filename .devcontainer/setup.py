@@ -47,30 +47,36 @@ def install_go():
     ])
 
     if GO_VERSION == "tip":
-        commands = [
-        "git clone --depth=1 https://go.googlesource.com/go $HOME/gotip",
-        "cd $HOME/gotip/src",
-        "./make.bash",
-        "export GOROOT=$HOME/gotip",
-        "export PATH=$PATH:$HOME/gotip/bin"
-        ]
+        run_commands([
+            "yum install -y go", # go is written in go
+            "git clone --depth=1 https://go.googlesource.com/go $HOME/gotip",
+            "cd $HOME/gotip/src && ./make.bash",
+            # "export GOROOT=$HOME/gotip",
+            # "export PATH=$PATH:$HOME/gotip/bin",
+            "update-alternatives --install '/usr/bin/go' 'go' '$HOME/gotip/bin/go' 0",
+            "update-alternatives --set go $HOME/gotip/bin/go",
+            "update-alternatives --install '/usr/bin/gofmt' 'gofmt' ''$HOME/gotip/bin/gofmt' 0",
+            "update-alternatives --set gofmt '$HOME/gotip/bin/gofmt",
+            # "mkdir -p /root/go/bin",
+            "go version",
+            "go env"
+        ])
+        os.environ["GOROOT"] = "/root/gotip"
+        os.environ["PATH"] = os.environ["PATH"] + ":/root/gotip/bin"
     else:
         go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
-        commands = [
-        "echo $GIMME_TYPE",
-        "gimme " + go_version,
-        "rm -fr /usr/local/go",
-        "mv -f /root/.gimme/versions/go{go_version}.linux.amd64 /usr/local/go".format(go_version=go_version),
-        "update-alternatives --install '/usr/bin/go' 'go' '/usr/local/go/bin/go' 0",
-        "update-alternatives --set go /usr/local/go/bin/go",
-        "update-alternatives --install '/usr/bin/gofmt' 'gofmt' '/usr/local/go/bin/gofmt' 0",
-        "update-alternatives --set gofmt /usr/local/go/bin/gofmt",
-        "mkdir -p /root/go/bin",
-        "go version",
-        "go env"
-        ]
-
-    run_commands(commands)
+        run_commands([
+            "gimme " + go_version,
+            "rm -fr /usr/local/go",
+            "mv -f /root/.gimme/versions/go{go_version}.linux.amd64 /usr/local/go".format(go_version=go_version),
+            "update-alternatives --install '/usr/bin/go' 'go' '/usr/local/go/bin/go' 0",
+            "update-alternatives --set go /usr/local/go/bin/go",
+            "update-alternatives --install '/usr/bin/gofmt' 'gofmt' '/usr/local/go/bin/gofmt' 0",
+            "update-alternatives --set gofmt /usr/local/go/bin/gofmt",
+            "mkdir -p /root/go/bin",
+            "go version",
+            "go env"
+        ])
 
 def make_release_dev():
     """Runs make release-dev."""
