@@ -55,6 +55,7 @@ def install_go():
 
     os.environ["GIMME_TYPE"] = "git"
     run_commands([
+        "echo $GIMME_TYPE",
         "gimme " + go_version,
         "rm -fr /usr/local/go",
         
