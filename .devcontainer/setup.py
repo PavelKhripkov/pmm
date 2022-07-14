@@ -54,9 +54,6 @@ def install_go():
         go_gimme_dir = 'go{go_version}.linux.amd64'.format(go_version=go_version)
         
     run_commands([
-        "yum update",
-        "yum install -y git",
-        "git version",
         "gimme " + go_version,
         "rm -fr /usr/local/go",
         
