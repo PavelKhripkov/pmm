@@ -47,21 +47,20 @@ def install_go():
     ])
 
     if GO_VERSION == "tip":
-        go_version = "master"
-        go_gimme_dir = "go"
+        commands = [
+        "git clone --depth=1 https://go.googlesource.com/go $HOME/gotip",
+        "cd $HOME/gotip/src",
+        "./make.bash",
+        "export GOROOT=$HOME/gotip",
+        "export $HOME/gotip/bin"
+        ]
     else:
         go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
-        go_gimme_dir = 'go{go_version}.linux.amd64'.format(go_version=go_version)
-
-    os.environ["GIMME_TYPE"] = "git"
-    run_commands([
+        commands = [
         "echo $GIMME_TYPE",
         "gimme " + go_version,
         "rm -fr /usr/local/go",
-        
-        "mv -f /root/.gimme/versions/{go_gimme_dir} /usr/local/go".format(go_gimme_dir=go_gimme_dir),
-        
-        #"mv -f /root/.gimme/versions/go{go_version}.linux.amd64 /usr/local/go".format(go_version=go_version),
+        "mv -f /root/.gimme/versions/go{go_version}.linux.amd64 /usr/local/go".format(go_version=go_version),
         "update-alternatives --install '/usr/bin/go' 'go' '/usr/local/go/bin/go' 0",
         "update-alternatives --set go /usr/local/go/bin/go",
         "update-alternatives --install '/usr/bin/gofmt' 'gofmt' '/usr/local/go/bin/gofmt' 0",
@@ -69,7 +68,9 @@ def install_go():
         "mkdir -p /root/go/bin",
         "go version",
         "go env"
-    ])
+        ]
+
+    run_commands(commands)
 
 def make_release_dev():
     """Runs make release-dev."""
