@@ -55,7 +55,7 @@ def install_go():
             # "export PATH=$PATH:$HOME/gotip/bin",
             "update-alternatives --install '/usr/bin/go' 'go' '$HOME/gotip/bin/go' 0",
             "update-alternatives --set go $HOME/gotip/bin/go",
-            "update-alternatives --install '/usr/bin/gofmt' 'gofmt' ''$HOME/gotip/bin/gofmt' 0",
+            "update-alternatives --install '/usr/bin/gofmt' 'gofmt' '$HOME/gotip/bin/gofmt' 0",
             "update-alternatives --set gofmt '$HOME/gotip/bin/gofmt",
             # "mkdir -p /root/go/bin",
             "go version",
