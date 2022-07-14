@@ -47,7 +47,7 @@ def install_go():
     ])
 
     if GO_VERSION == 'tip':
-        go_version = 'master'
+        go_version = '1.19rc2'
         go_gimme_dir = 'go'
     else:
         go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
@@ -98,14 +98,15 @@ def setup():
 
 def main():
     # install packages early as they will be required below
-    install_packages_p = multiprocessing.Process(target=install_packages)
-    install_packages_p.start()
+#     install_packages_p = multiprocessing.Process(target=install_packages)
+#     install_packages_p.start()
 
     # install Go and wait for it
+    install_packages()
     install_go()
 
     # make install (requires make package)
-    install_packages_p.join()
+#     install_packages_p.join()
     make_init()
     make_release_dev()
 
