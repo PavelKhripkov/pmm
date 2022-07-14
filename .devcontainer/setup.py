@@ -46,9 +46,9 @@ def install_go():
         "chmod +x /usr/local/bin/gimme"
     ])
 
-    if GO_VERSION == 'tip':
-        go_version = '1.19rc2'
-        go_gimme_dir = 'go1.19rc2.linux.amd64'
+    if GO_VERSION == "tip":
+        go_version = "master"
+        go_gimme_dir = "go"
     else:
         go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
         go_gimme_dir = 'go{go_version}.linux.amd64'.format(go_version=go_version)
