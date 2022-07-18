@@ -6,27 +6,17 @@ on:
     - cron: "*/5 * * * *"
 
 jobs:
-  check:
+  common:
+    uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
+
+  admin:
+    uses: PavelKhripkov/pmm/.github/workflows/admin.yml@test
+
+  agent:
+    uses: PavelKhripkov/pmm/.github/workflows/agent.yml@test
+
+  api:
+    uses: PavelKhripkov/pmm/.github/workflows/api.yml@test
+
+  managed:
     uses: PavelKhripkov/pmm/.github/workflows/managed.yml@test
-
-
-#
-#  admin:
-#    uses: PavelKhripkov/pmm/.github/workflows/admin.yml@test
-#    with:
-#      go-version: 'tip'
-#
-#  agent:
-#    uses: PavelKhripkov/pmm/.github/workflows/agent.yml@test
-#    with:
-#      go-version: 'tip'
-#
-#  api:
-#    uses: PavelKhripkov/pmm/.github/workflows/api.yml@test
-#    with:
-#      go-version: 'tip'
-#
-#  managed:
-#    uses: PavelKhripkov/pmm/.github/workflows/common.yml@test
-#    with:
-#      go-version: 'tip'

@@ -98,44 +98,44 @@ jobs:
       - name: Upload coverage results
         uses: percona-platform/codecov-action@v1
         with:
-         file: cover.out
-         flags: all,cover
-         functionalities: fix
-         env_vars: GO_VERSION,PMM_SERVER_IMAGE
-         fail_ci_if_error: false
+          file: cover.out
+          flags: all,cover
+          functionalities: fix
+          env_vars: GO_VERSION,PMM_SERVER_IMAGE
+          fail_ci_if_error: false
 
       - name: Upload coverage results
         uses: percona-platform/codecov-action@v1
         with:
-         file: crosscover.out
-         flags: all,crosscover
-         functionalities: fix
-         env_vars: GO_VERSION,PMM_SERVER_IMAGE
-         fail_ci_if_error: false
+          file: crosscover.out
+          flags: all,crosscover
+          functionalities: fix
+          env_vars: GO_VERSION,PMM_SERVER_IMAGE
+          fail_ci_if_error: false
 
       - name: Upload coverage results
         uses: percona-platform/codecov-action@v1
         with:
-         file: race-crosscover.out
-         flags: update,crosscover
-         functionalities: fix
-         env_vars: GO_VERSION,PMM_SERVER_IMAGE
-         fail_ci_if_error: false
+          file: race-crosscover.out
+          flags: update,crosscover
+          functionalities: fix
+          env_vars: GO_VERSION,PMM_SERVER_IMAGE
+          fail_ci_if_error: false
 
       - name: Cache
         run: |
-         docker exec pmm-managed-server go clean -testcache
-         docker exec --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server find . -type d -name fuzzdata -exec rm -r {} +
-         rm -fr ~/.cache/go-build
-         mkdir -p ~/.cache
-         docker cp pmm-managed-server:/root/.cache/go-build ~/.cache/go-build
+          docker exec pmm-managed-server go clean -testcache
+          docker exec --workdir=/root/go/src/github.com/percona/pmm/managed pmm-managed-server find . -type d -name fuzzdata -exec rm -r {} +
+          rm -fr ~/.cache/go-build
+          mkdir -p ~/.cache
+          docker cp pmm-managed-server:/root/.cache/go-build ~/.cache/go-build
 
       - name: Run debug commands on failure
         if: ${{ failure() }}
         run: |
-         env
-         go version
-         go env
-         pwd
-         git status
-         kubectl version
+          env
+          go version
+          go env
+          pwd
+          git status
+          kubectl version
