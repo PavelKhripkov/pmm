@@ -3,12 +3,14 @@
 # See CONTRIBUTING.md.
 
 from __future__ import print_function, unicode_literals
-import multiprocessing, os, subprocess, time
+import os
+import subprocess
+import time
 
 
 GO_VERSION = os.getenv("GO_VERSION")
 if GO_VERSION is None:
-    raise("GO_VERSION is not set")
+    raise "GO_VERSION is not set"
 
 
 def run_commands(commands):
@@ -75,12 +77,6 @@ def install_go():
         "go env"
     ])
 
-def make_release_dev():
-    """Runs make release-dev."""
-
-    run_commands([
-        "make release-dev",
-    ])
 
 def make_init():
     """Runs make init."""
@@ -88,6 +84,7 @@ def make_init():
     run_commands([
         "make init",
     ])
+
 
 def setup():
     """Runs various setup commands."""
@@ -100,18 +97,9 @@ def setup():
 
 
 def main():
-    # install packages early as they will be required below
-#     install_packages_p = multiprocessing.Process(target=install_packages)
-#     install_packages_p.start()
-
-    # install Go and wait for it
     install_packages()
     install_go()
-
-    # make install (requires make package)
-#     install_packages_p.join()
     make_init()
-    make_release_dev()
 
     # do basic setup
     setup()
