@@ -46,23 +46,12 @@ def install_go():
         "chmod +x /usr/local/bin/gimme"
     ])
 
-    if GO_VERSION == 'tip':
-        go_version = 'master'
-        go_gimme_dir = 'go'
-    else:
-        go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
-        go_gimme_dir = 'go{go_version}.linux.amd64'.format(go_version=go_version)
-        
+    go_version = subprocess.check_output("gimme -r " + GO_VERSION, shell=True).strip()
+
     run_commands([
-        "apt update",
-        "apt install -y git",
-        "git version",
         "gimme " + go_version,
         "rm -fr /usr/local/go",
-        
-        "mv -f /root/.gimme/versions/{go_gimme_dir} /usr/local/go".format(go_gimme_dir=go_gimme_dir),
-        
-        #"mv -f /root/.gimme/versions/go{go_version}.linux.amd64 /usr/local/go".format(go_version=go_version),
+        "mv -f /root/.gimme/versions/go{go_version}.linux.amd64 /usr/local/go".format(go_version=go_version),
         "update-alternatives --install '/usr/bin/go' 'go' '/usr/local/go/bin/go' 0",
         "update-alternatives --set go /usr/local/go/bin/go",
         "update-alternatives --install '/usr/bin/gofmt' 'gofmt' '/usr/local/go/bin/gofmt' 0",
@@ -70,13 +59,6 @@ def install_go():
         "mkdir -p /root/go/bin",
         "go version",
         "go env"
-    ])
-
-def make_release_dev():
-    """Runs make release-dev."""
-
-    run_commands([
-        "make release-dev",
     ])
 
 def make_init():
@@ -90,8 +72,8 @@ def setup():
     """Runs various setup commands."""
     run_commands([
         # allow connecting from any host, needed to connect from host to PG running in docker
-        "sed -i -e \"s/#listen_addresses = \'localhost\'/listen_addresses = \'*\'/\" /srv/postgres/postgresql.conf",
-        "echo 'host    all         all     0.0.0.0/0     trust' >> /srv/postgres/pg_hba.conf",
+        "sed -i -e \"s/#listen_addresses = \'localhost\'/listen_addresses = \'*\'/\" /srv/postgres14/postgresql.conf",
+        "echo 'host    all         all     0.0.0.0/0     trust' >> /srv/postgres14/pg_hba.conf",
         "supervisorctl restart postgresql",
     ])
 
@@ -107,7 +89,6 @@ def main():
     # make install (requires make package)
     install_packages_p.join()
     make_init()
-    make_release_dev()
 
     # do basic setup
     setup()

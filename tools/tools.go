@@ -1,3 +1,18 @@
+// Copyright (C) 2021 Percona LLC
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 //go:build tools
 
 package tools
@@ -5,12 +20,14 @@ package tools
 import (
 	_ "github.com/BurntSushi/go-sumtype"
 	_ "github.com/Percona-Lab/swagger-order"
+	_ "github.com/apache/skywalking-eyes/cmd/license-eye"
 	_ "github.com/bufbuild/buf/cmd/buf"
 	_ "github.com/daixiang0/gci"
 	_ "github.com/go-delve/delve/cmd/dlv"
 	_ "github.com/go-openapi/runtime/client"
 	_ "github.com/go-openapi/spec"
 	_ "github.com/go-swagger/go-swagger/cmd/swagger"
+	_ "github.com/golangci/golangci-lint/cmd/golangci-lint"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2"
 	_ "github.com/jstemmer/go-junit-report"
@@ -37,6 +54,7 @@ import (
 //go:generate go build -o ../bin/go-sumtype github.com/BurntSushi/go-sumtype
 //go:generate go build -o ../bin/gofumpt mvdan.cc/gofumpt
 //go:generate go build -o ../bin/goimports golang.org/x/tools/cmd/goimports
+//go:generate go build -o ../bin/golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint
 //go:generate go build -o ../bin/gopls golang.org/x/tools/gopls
 //go:generate go build -o ../bin/mockery github.com/vektra/mockery/cmd/mockery
 //go:generate go build -o ../bin/protoc-gen-go google.golang.org/protobuf/cmd/protoc-gen-go
@@ -48,3 +66,4 @@ import (
 //go:generate go build -o ../bin/reviewdog github.com/reviewdog/reviewdog/cmd/reviewdog
 //go:generate go build -o ../bin/swagger github.com/go-swagger/go-swagger/cmd/swagger
 //go:generate go build -o ../bin/swagger-order github.com/Percona-Lab/swagger-order
+//go:generate env CGO_ENABLED=0 go build -o ../bin/license-eye github.com/apache/skywalking-eyes/cmd/license-eye
