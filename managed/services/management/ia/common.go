@@ -1,4 +1,3 @@
-// pmm-managed
 // Copyright (C) 2017 Percona LLC
 //
 // This program is free software: you can redistribute it and/or modify
@@ -165,7 +164,7 @@ func validateParameters(definitions models.AlertExprParamsDefinitions, values mo
 			return status.Errorf(codes.InvalidArgument, "Parameter %s has type %s instead of %s.", d.Name, value.Type, d.Type)
 		}
 
-		switch d.Type { //nolint:exhaustive
+		switch d.Type {
 		case models.Float:
 			v := d.FloatParam
 			fv := value.FloatValue

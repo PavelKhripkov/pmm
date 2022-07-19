@@ -1,4 +1,3 @@
-// pmm-managed
 // Copyright (C) 2017 Percona LLC
 //
 // This program is free software: you can redistribute it and/or modify
@@ -242,7 +241,7 @@ func updateAgentStatus(ctx context.Context, q *reform.Querier, agentID string, s
 
 	// agent can be already deleted, but we still can receive status message from pmm-agent.
 	if err == reform.ErrNoRows {
-		switch status { //nolint:exhaustive
+		switch status {
 		case inventorypb.AgentStatus_STOPPING, inventorypb.AgentStatus_DONE:
 			return nil
 		}

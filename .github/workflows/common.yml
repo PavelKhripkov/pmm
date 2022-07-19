@@ -3,31 +3,27 @@ name: Common
 on:
   push:
     branches:
-      - test
+      - main
+      - release-*
     tags:
       - v[0-9]+.[0-9]+.[0-9]+*
-
   pull_request:
-
-  workflow_call:
-    inputs:
-      go-version:
-        description: An array of Go versions to be tested against, in a format of json string.
-        required: false
-        type: string
-        default: '["tip"]'
 
 jobs:
   check:
     name: Checks
     runs-on: ubuntu-22.04
     strategy:
-      fail-fast: false
       matrix:
-        go-version: ${{ fromJson(inputs.go-version || '["tip"]') }}
+        go-version: [1.18.x]
+        may-fail: [false]
+#        include:
+#          - go-version: tip
+#            may-fail: true
+
+    continue-on-error: ${{ matrix.may-fail }}
 
     env:
-      GO_VERSION: ${{ matrix.go-version }}
       GOPATH: ${{ github.workspace }}
       WORKING_DIR: ${{ github.workspace }}/src/github.com/percona/pmm
 
@@ -43,13 +39,13 @@ jobs:
           path: ${{ env.WORKING_DIR }}
 
       - name: Set up Go release
-        if: env.GO_VERSION != 'tip'
+        if: matrix.go-version != 'tip'
         uses: percona-platform/setup-go@v2
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version: ${{ matrix.go-version }}
 
       - name: Set up Go tip
-        if: env.GO_VERSION == 'tip'
+        if: matrix.go-version == 'tip'
         run: |
           git clone --depth=1 https://go.googlesource.com/go $HOME/gotip
           cd $HOME/gotip/src
@@ -61,9 +57,9 @@ jobs:
         uses: percona-platform/cache@v2
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-${{ hashFiles('**/go.sum') }}
+          key: ${{ matrix.os }}-go-${{ matrix.go-version }}-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ env.GO_VERSION }}-modules-
+            ${{ matrix.os }}-go-${{ matrix.go-version }}-modules-
 
       - name: Download Go modules
         run: go mod download
@@ -74,62 +70,28 @@ jobs:
       - name: Check build
         run: make release
 
-      - name: Run check-license
-        run: |
-          # go run ../.github/check-license.go # TODO: This repo has multiple licenses, fix checker. https://jira.percona.com/browse/PMM-10118
-
-      - name: Run go-sumtype
-        run: bin/go-sumtype ./...
-
-      - name: Run golangci-lint
+      - name: Run required checks/linters
         env:
-          COMMAND: "bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number"
-          REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true"
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if out=$( ${{ env.COMMAND }} ); exit_code=$?; [ $exit_code -ne 0 ]; then
-            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-              echo "$out"
-              exit $exit_code
-            else
-              echo "$out" ${{ env.REDIRECT }}
-            fi
-          else
-            echo "$out"
-          fi
+          bin/go-sumtype ./...
+          # use GITHUB_TOKEN because only it has access to GitHub Checks API
+          bin/golangci-lint run -c=.golangci-required.yml --out-format=line-number | bin/reviewdog -f=golangci-lint -reporter=github-pr-review -fail-on-error=true
 
-      - name: Run go-consistent
-        env:
-          COMMAND: 'bin/go-consistent -pedantic -exclude "tests" ./...'
-          REDIRECT: "| bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true"
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          if out=$( ${{ env.COMMAND }} ); exit_code=$?; [ $exit_code -ne 0 ]; then
-            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-              echo "$out"
-              exit $exit_code
-            else
-              echo "$out" ${{ env.REDIRECT }}
-            fi
-          else
-            echo "$out"
-          fi
+          # run license checker on configured files
+          bin/license-eye -c .licenserc.yaml header check
+
+          # run it like this until it will be added to golangci-lint:
+          # * https://github.com/golangci/golangci-lint/issues/288
+          bin/go-consistent -pedantic -exclude "tests" ./... | bin/reviewdog -f=go-consistent -reporter=github-pr-review -fail-on-error=true
 
       - name: Run optional checks/linters
-        env:
-          COMMAND: "bin/golangci-lint run --out-format=line-number"
-          REDIRECT: "| bin/reviewdog -f=golangci-lint -reporter=github-pr-review"
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.ROBOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          if out=$( ${{ env.COMMAND }} ); exit_code=$?; [ $exit_code -ne 0 ]; then
-            if [ $exit_code -gt 1 ] || ${{ github.event.pull_request == null }}; then
-              echo "$out"
-              exit $exit_code
-            else
-              echo "$out" ${{ env.REDIRECT }}
-            fi
+          # use ROBOT_TOKEN for better reviewer's name
+          if [[ ! -z "${{ secrets.ROBOT_TOKEN }}" ]]; then
+            bin/golangci-lint run --out-format=line-number | env REVIEWDOG_GITHUB_API_TOKEN=${{ secrets.ROBOT_TOKEN }} bin/reviewdog -f=golangci-lint -reporter=github-pr-review
           else
-            echo "$out"
+            bin/golangci-lint run --out-format=line-number | env REVIEWDOG_GITHUB_API_TOKEN=${{ secrets.GITHUB_TOKEN }} bin/reviewdog -f=golangci-lint -reporter=github-pr-review
           fi
 
       - name: Test common API

@@ -1,4 +1,3 @@
-// pmm-managed
 // Copyright (C) 2017 Percona LLC
 //
 // This program is free software: you can redistribute it and/or modify
@@ -365,7 +364,7 @@ func checkPreconditions(q *reform.Querier, data *models.ScheduledTaskData, enabl
 }
 
 func checkMongoDBBackupPreconditions(q *reform.Querier, mode models.BackupMode, serviceID, scheduleID string) error {
-	switch mode { //nolint:exhaustive
+	switch mode {
 	case models.PITR:
 		// PITR backup can be enabled only if there is no other scheduled backups.
 		tasks, err := models.FindScheduledTasks(q, models.ScheduledTasksFilter{

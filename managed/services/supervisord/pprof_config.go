@@ -14,13 +14,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-package platform
+package supervisord
 
-// Config platform config.
-type Config struct {
-	SkipTLSVerification bool `yaml:"skip_tls_verification"` //nolint:tagliatelle
-}
+import "time"
 
-// Init platform config init.
-func (c *Config) Init() {
+// PprofConfig pprof settings.
+type PprofConfig struct {
+	ProfileDuration time.Duration
+	TraceDuration   time.Duration
 }

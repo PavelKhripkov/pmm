@@ -1,4 +1,3 @@
-// pmm-managed
 // Copyright (C) 2017 Percona LLC
 //
 // This program is free software: you can redistribute it and/or modify
@@ -226,7 +225,7 @@ func (u *StateUpdater) sendSetStateRequest(ctx context.Context, agent *pmmAgentI
 				return err
 			}
 
-			switch row.AgentType { //nolint:exhaustive
+			switch row.AgentType {
 			case models.MySQLdExporterType:
 				agentProcesses[row.AgentID] = mysqldExporterConfig(service, row, redactMode, pmmAgentVersion)
 			case models.MongoDBExporterType:
